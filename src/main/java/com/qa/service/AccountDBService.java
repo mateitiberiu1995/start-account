@@ -16,9 +16,13 @@ import com.qa.util.JSONUtil;
 
 public class AccountDBService {
 	
-	JSONUtil util = new JSONUtil();
+	@Inject
+	private JSONUtil util;
+	
 	@PersistenceContext(unitName = "primary")
 	private EntityManager manager;
+	
+	
 	
 	public String getAllAccounts() {
 		Query query = manager.createQuery("Select a FROM Account a");
@@ -28,7 +32,7 @@ public class AccountDBService {
 	@Transactional(REQUIRED)
 	public String addAccount(String account) {
 		Account anAccount = util.getObjectForJSON(account, Account.class);
-		manager.persist(anAccount);
+		manager.persist(anAccount);      
 		return "{\"message\": \"account sucessfully added\"}";
 	}
 	
@@ -58,6 +62,13 @@ public class AccountDBService {
 	
 	private Account findAccount(Long id) {
 		return manager.find(Account.class, id);
+	}
+	public void setManager(EntityManager manager) {
+		this.manager = manager;
+	}
+
+	public void setUtil(JSONUtil util) {
+		this.util = util;
 	}
 
 
