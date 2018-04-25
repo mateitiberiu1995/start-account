@@ -24,38 +24,42 @@ public class AccountServiceTest {
 
 	@Test
 	public void addAndRemoveAccountTest() {
-		service.addAccountFromMap(joeBloggs);
-		Assert.assertEquals(service.getAccountMap().size(), 1);
-		service.addAccountFromMap(janeBloggs);
-		Assert.assertEquals(service.getAccountMap().size(), 2);
-		service.removeAccountFromMap(0);
-		Assert.assertEquals(service.getAccountMap().size(), 1);
-		service.removeAccountFromMap(1);
-		Assert.assertEquals(service.getAccountMap().size(), 0);
-		service.removeAccountFromMap(5);
-		Assert.assertEquals(service.getAccountMap().size(), 0);
+	
+		Assert.assertEquals("{\"message\": \"account sucessfully added\"}", service.addAccount(util.getJSONForObject(joeBloggs)));
+		Assert.assertEquals("{\"message\": \"account sucessfully added\"}", service.addAccount(util.getJSONForObject(janeBloggs)));
+		Assert.assertEquals("{\"message\": \"account sucessfully removed\"}", service.deleteAccount((long) 2));
+		Assert.assertEquals("{\"message\": \"account sucessfully removed\"}", service.deleteAccount((long) 1));
+		Assert.assertEquals("{\"message\": \"account couldn't be removed\"}", service.deleteAccount((long) 1));
 	}
 
 	@Test
 	public void accountConversionToJSONTest() {
-		String emptyMap = util.getJSONForObject(service.getAccountMap());
+		
+		Assert.assertEquals("{\"message\": \"account sucessfully added\"}", service.addAccount(util.getJSONForObject(joeBloggs)));
+		Assert.assertEquals("{\"message\": \"account sucessfully updated\"}", service.updateAccount((long) 1,util.getJSONForObject(janeBloggs)));
+		Assert.assertEquals("{\"1\":{\"firstName\":\"Jane\",\"secondName\":\"Bloggs\",\"accountNumber\":\"1234\"}}", service.getAllAccounts());
+		Assert.assertEquals("{\"message\": \"account sucessfully removed\"}", service.deleteAccount((long) 1));
+		
+		
+		/*String emptyMap = util.getJSONForObject(service.getAccountMap());
 		Assert.assertEquals("{}", emptyMap);
 		String accountAsJSON = "{\"0\":{\"firstName\":\"Joe\",\"secondName\":\"Bloggs\",\"accountNumber\":\"1234\"},\"1\":{\"firstName\":\"Jane\",\"secondName\":\"Bloggs\",\"accountNumber\":\"1234\"}}";
 		Assert.assertEquals("{}", emptyMap);
 		service.addAccountFromMap(joeBloggs);
 		service.addAccountFromMap(janeBloggs);
 		String populatedAccountMap = util.getJSONForObject(service.getAccountMap());
-		Assert.assertEquals(accountAsJSON, populatedAccountMap);
+		Assert.assertEquals(accountAsJSON, populatedAccountMap);*/
 	}
 
-	@Test
+
+	/*@Test
 	public void getCountForFirstNamesInAccount() {
 		Assert.assertEquals(service.getNumberOfAccountWithFirstName("Joe"), 0);
 		service.addAccountFromMap(joeBloggs);
 		Assert.assertEquals(service.getNumberOfAccountWithFirstName("Joe"), 1);
 		Account joeGordon = new Account("Joe", "Gordon", "1234");
 		service.addAccountFromMap(joeGordon);
-		Assert.assertEquals(service.getNumberOfAccountWithFirstName("Joe"), 2);
-	}
+		Assert.assertEquals(service.getNumberOfAccountWithFirstName("Joe"), 2);*/
+
 
 }

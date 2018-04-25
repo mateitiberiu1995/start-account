@@ -3,28 +3,29 @@ package com.qa.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 import com.qa.domain.Account;
 import com.qa.util.JSONUtil;
 
-public class AccountService {
+@Alternative
+public class AccountService implements AccountingService {
 
-	@Inject
-	private Map<Long, Account> accountMap;
+	private Map<Long, Account> accountMap  = new HashMap<Long,Account>();
+	private JSONUtil util = new JSONUtil();
 
-	@Inject
-	private JSONUtil util;
-
-	/*public AccountService() {
-		accountMap = new HashMap<Integer, Account>();
-	}*/
+	public AccountService() {
+	}
 	
+	@Override
 	public String getAllAccounts()
 	{
 		return util.getJSONForObject(accountMap);
 	}
 	
+	@Override
 	public String addAccount(String account) {
 		Account anAccount = util.getObjectForJSON(account , Account.class);
 		if(accountMap.containsValue(anAccount))
@@ -38,7 +39,7 @@ public class AccountService {
 		}
 		
 	}
-	
+	@Override
 	public String updateAccount(Long id, String account) {
 		Account anAccount = util.getObjectForJSON(account, Account.class);
 		if(accountMap.containsKey(id))
@@ -51,6 +52,7 @@ public class AccountService {
 		
 	}
 	
+	@Override
 	public String deleteAccount(Long id)
 	{
 		if(accountMap.containsKey(id))
@@ -62,6 +64,7 @@ public class AccountService {
 			return "{\"message\": \"account couldn't be removed\"}";
 		
 	}
+	
 	/*public void addAccountFromMap(Account userAccount) {
 		accountMap.put(count, userAccount);
 		

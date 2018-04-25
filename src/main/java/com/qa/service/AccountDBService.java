@@ -5,6 +5,8 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.util.Collection;
 
+import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +16,9 @@ import javax.transaction.Transactional;
 import com.qa.domain.Account;
 import com.qa.util.JSONUtil;
 
-public class AccountDBService {
+@Model
+@Default
+public class AccountDBService implements AccountingService {
 	
 	@Inject
 	private JSONUtil util;
