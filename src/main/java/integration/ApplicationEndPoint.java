@@ -2,7 +2,9 @@ package integration;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import com.qa.service.AccountingService;
@@ -32,5 +34,12 @@ public class ApplicationEndPoint {
 	}
 	public void setRepo(AccountingService repo) {
 		this.repo = repo;
+	}
+	
+	@Path("/json")
+	@PUT
+	@Produces({ "application/json" })
+	public String updateAccount(@PathParam("id") Long id, String account) {
+		return repo.updateAccount(id, account);
 	}
 }
